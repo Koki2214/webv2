@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Management System</title>
+    <meta name="description" content="Manage document requests, track transaction history, and process applications efficiently.">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Document Management System">
+    <meta property="og:description" content="Manage document requests, track transaction history, and process applications efficiently.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Mobile Menu Button -->
+    <div class="mobile-menu-btn" id="mobileMenuBtn" data-testid="button-mobile-menu">
+        <i class="fas fa-bars" id="menuIcon"></i>
+    </div>
+
+    <!-- Mobile Backdrop -->
+    <div class="mobile-backdrop" id="mobileBackdrop"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo/Header -->
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-file-alt"></i>
+                <span>DocuManager</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="#dashboard" class="nav-link active" data-page="dashboard" data-testid="link-dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#manage-requests" class="nav-link" data-page="manage-requests" data-testid="link-manage-requests">
+                        <i class="fas fa-file-text"></i>
+                        <span>Manage Requests</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#transaction-history" class="nav-link" data-page="transaction-history" data-testid="link-transaction-history">
+                        <i class="fas fa-history"></i>
+                        <span>Transaction History</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#user-profile" class="nav-link" data-page="user-profile" data-testid="link-user-profile">
+                        <i class="fas fa-user"></i>
+                        <span>User Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- User Info -->
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name" data-testid="text-username">John Admin</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+            <button class="logout-btn" data-testid="button-logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard">
+            <div class="page-header">
+                <h1 data-testid="text-welcome">Welcome, John Admin!</h1>
+                <p>Manage document requests and track their progress from your dashboard.</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Requests</span>
+                        <span class="stat-value" data-testid="stat-total-requests">15</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Pending</span>
+                        <span class="stat-value" data-testid="stat-pending-requests">5</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Approved</span>
+                        <span class="stat-value" data-testid="stat-approved-requests">8</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Completed</span>
+                        <span class="stat-value" data-testid="stat-completed-requests">2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-card" data-testid="card-manage-requests">
+                    <h3><i class="fas fa-cogs"></i> Manage Document Requests</h3>
+                    <p>Review and process pending document requests. Accept or reject applications from residents.</p>
+                    <button class="btn btn-primary" onclick="showPage('manage-requests')">Go to Manage Requests</button>
+                </div>
+                <div class="action-card" data-testid="card-transaction-history">
+                    <h3><i class="fas fa-history"></i> Transaction History</h3>
+                    <p>View all past document requests and their detailed transaction history.</p>
+                    <button class="btn btn-primary" onclick="showPage('transaction-history')">View History</button>
+                </div>
+            </div>
+
+            <!-- Recent Requests -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-alt"></i> Recent Requests</h2>
+                </div>
+                <div class="card-content">
+                    <div class="recent-requests" id="recentRequests">
+                        <!-- Recent requests will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Requests Page -->
+        <div class="page" id="manage-requests">
+            <div class="page-header">
+                <h1 data-testid="text-page-title">Manage Document Requests</h1>
+                <p>Review and process document requests from residents. Approve or reject applications.</p>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by requestor name..." data-testid="input-search">
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-status="all" data-testid="button-filter-all">All</button>
+                    <button class="filter-btn" data-status="pending" data-testid="button-filter-pending">Pending</button>
+                    <button class="filter-btn" data-status="approved" data-testid="button-filter-approved">Approved</button>
+                    <button class="filter-btn" data-status="rejected" data-testid="button-filter-rejected">Rejected</button>
+                </div>
+            </div>
+
+            <!-- Stats Cards for Manage Requests -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Pending Review</span>
+                        <span class="stat-value" data-testid="stat-pending">5</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Approved</span>
+                        <span class="stat-value" data-testid="stat-approved">8</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Total Requests</span>
+                        <span class="stat-value" data-testid="stat-total">15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requests Table -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-alt"></i> Document Requests</h2>
+                </div>
+                <div class="card-content">
+                    <div class="table-container">
+                        <table class="requests-table" id="requestsTable">
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Name</th>
+                                    <th>Form Requested</th>
+                                    <th>Timestamp</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requestsTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction History Page -->
+        <div class="page" id="transaction-history">
+            <div class="page-header">
+                <h1 data-testid="text-page-title">Transaction History</h1>
+                <p>View all document requests and their detailed transaction history.</p>
+            </div>
+
+            <!-- Sort Controls -->
+            <div class="sort-section">
+                <div class="sort-controls">
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy" data-testid="select-sort-by">
+                        <option value="date">Date</option>
+                        <option value="name">Name</option>
+                        <option value="document-type">Document Type</option>
+                    </select>
+                    <button class="sort-order-btn" id="sortOrderBtn" data-testid="button-sort-order">
+                        <i class="fas fa-sort-amount-down"></i>
+                        <span>Descending</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transaction History List -->
+            <div class="transaction-list" id="transactionList">
+                <!-- Transaction items will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- User Profile Page -->
+        <div class="page" id="user-profile">
+            <div class="page-header">
+                <h1 data-testid="text-page-title">User Profile</h1>
+                <p>Manage your account settings and personal information.</p>
+            </div>
+
+            <div class="profile-content">
+                <!-- Profile Info Card -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-user"></i> Profile Information</h2>
+                    </div>
+                    <div class="card-content">
+                        <form class="profile-form" id="profileForm">
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" value="John Admin" data-testid="input-full-name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" value="john.admin@example.com" data-testid="input-email">
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" value="johnadmin" data-testid="input-username">
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <input type="text" id="role" value="Administrator" readonly data-testid="input-role">
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <input type="text" id="department" value="IT Administration" data-testid="input-department">
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-testid="button-save-profile">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Change Password Card -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-lock"></i> Change Password</h2>
+                    </div>
+                    <div class="card-content">
+                        <form class="password-form" id="passwordForm">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" data-testid="input-current-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" data-testid="input-new-password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" data-testid="input-confirm-password">
+                            </div>
+                            <button type="submit" class="btn btn-primary" data-testid="button-change-password">
+                                <i class="fas fa-key"></i> Change Password
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Status Update Modal -->
+    <div class="modal" id="statusModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Request Status</h3>
+                <button class="modal-close" data-testid="button-close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="statusUpdateForm">
+                    <div class="form-group">
+                        <label for="statusSelect">Status</label>
+                        <select id="statusSelect" data-testid="select-status">
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="processing">Processing</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="statusNotes">Notes (optional)</label>
+                        <textarea id="statusNotes" rows="3" placeholder="Add any notes about this status change..." data-testid="textarea-notes"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeStatusModal()" data-testid="button-cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary" data-testid="button-update-status">Update Status</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-content">
+            <i class="toast-icon"></i>
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
